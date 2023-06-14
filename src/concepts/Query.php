@@ -16,26 +16,14 @@
  * limitations under the License.
  */
 
-namespace basin\attributes;
-
-use basic\concepts\OutRel;
+namespace basin\concepts;
 
 /**
- * Description of MapProperty
+ * Description of Query
  *
  * @author Alessio
  */
-#[Attribute(Attribute::TARGET_PROPERTY)]
-class MapProperty {
-
-    public $context;
-    public $rel;
-    public $settings;
-
-    public function __construct(string $context, array $settings = [], ?OutRel $rel = null) {
-        $this->context = $context;
-        $this->rel = $rel;
-        $this->settings = $settings;
-    }
+interface Query {
+    //put your code here
 
 }

@@ -22,7 +22,7 @@ namespace basin\concepts;
  *
  * @author Alessio
  */
-interface OutLink {
+interface OutRel {
 
     /**
      * Class name of the target
@@ -31,15 +31,15 @@ interface OutLink {
     public function target(): string;
 
     /**
-     * Property of the link
-     * @return string
+     * Map associating local keys to foreign keys
+     * @return array
      */
-    public function property(): string;
+    public function map(): array;
 
     /**
-     * Local key name
-     * @return string local key property
+     * Additional parameters
+     * @return array
      */
-    public function local_key(): string;
+    public function parameters(): array;
 
 }

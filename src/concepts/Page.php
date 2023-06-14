@@ -16,26 +16,37 @@
  * limitations under the License.
  */
 
-namespace basin\attributes;
-
-use basic\concepts\OutRel;
+namespace basin\concepts;
 
 /**
- * Description of MapProperty
  *
  * @author Alessio
  */
-#[Attribute(Attribute::TARGET_PROPERTY)]
-class MapProperty {
+interface Page {
 
-    public $context;
-    public $rel;
-    public $settings;
+    /**
+     * Numerical offset, like skip n rows
+     * @return int
+     */
+    public function offset(): int;
 
-    public function __construct(string $context, array $settings = [], ?OutRel $rel = null) {
-        $this->context = $context;
-        $this->rel = $rel;
-        $this->settings = $settings;
-    }
+    /**
+     * Numerical limit, like limit to n results
+     * @return int
+     */
+    public function limit(): int;
+
+    /**
+     * Order associated at page
+     * @return Order
+     */
+    public function order(): Order;
+
+    /**
+     * Apply to query
+     * @param Query $target
+     * @return void
+     */
+    public function apply(Query $target): void;
 
 }
