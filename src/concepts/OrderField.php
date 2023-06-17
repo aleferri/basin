@@ -1,6 +1,6 @@
 <?php
 
-/*
+/* 
  * Copyright 2023 Alessio.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,12 +18,23 @@
 
 namespace basin\concepts;
 
-/**
- * Description of Query
- *
- * @author Alessio
- */
-interface Query {
-    //put your code here
-
+class OrderField {
+    
+    /**
+     * 
+     * @var string
+     */
+    public $field;
+    
+    /**
+     * 
+     * @var Direction
+     */
+    public $direction;
+    
+    public function __construct(string $field, Direction $direction) {
+        $this->field = $field;
+        $this->direction = $direction;
+    }
+    
 }

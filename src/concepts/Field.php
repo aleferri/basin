@@ -22,19 +22,32 @@ namespace basin\concepts;
  *
  * @author Alessio
  */
-interface Order {
+interface Field {
     
     /**
-     * List of fields in order of priority
-     * @return array<OrderField>
+     * Name of the field
+     * @return string
      */
-    public function fields(): array;
+    public function name(): string;
     
     /**
-     * Append a field to the order
-     * @param OrderField $field field to append
-     * @return Order a new instance of Order
+     * Field alias
+     * @return string
      */
-    public function append(OrderField $field): Order;
-
+    public function alias(): string;
+    
+    /**
+     * Lower the field to a map in the form
+     * [ key => [ origin ] ]
+     * @return array
+     */
+    public function lower_to(): array;
+    
+    /**
+     * Parse the result in a valid value
+     * @param mixed $data
+     * @return mixed parsed data
+     */
+    public function parse(mixed $data): mixed;
+    
 }

@@ -18,8 +18,6 @@
 
 namespace basin\attributes;
 
-use basic\concepts\OutRel;
-
 /**
  * Description of MapProperty
  *
@@ -29,12 +27,12 @@ use basic\concepts\OutRel;
 class MapProperty {
 
     public $context;
-    public $rel;
+    public $kind;
     public $settings;
 
-    public function __construct(string $context, array $settings = [], ?OutRel $rel = null) {
+    public function __construct(string $context, string $kind, array $settings = []) {
         $this->context = $context;
-        $this->rel = $rel;
+        $this->kind = $kind;
         $this->settings = $settings;
     }
 

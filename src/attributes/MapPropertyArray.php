@@ -16,25 +16,26 @@
  * limitations under the License.
  */
 
-namespace basin\concepts;
+namespace basin\attributes;
+
+use basin\concepts\OutRel;
 
 /**
+ * Description of MapProperty
  *
  * @author Alessio
  */
-interface Order {
-    
-    /**
-     * List of fields in order of priority
-     * @return array<OrderField>
-     */
-    public function fields(): array;
-    
-    /**
-     * Append a field to the order
-     * @param OrderField $field field to append
-     * @return Order a new instance of Order
-     */
-    public function append(OrderField $field): Order;
+#[Attribute(Attribute::TARGET_PROPERTY)]
+class MapPropertyArray {
+
+    public $context;
+    public $origin;
+    public $settings;
+
+    public function __construct(string $context, OutRel|bool $origin, array $settings = []) {
+        $this->context = $context;
+        $this->origin = $origin;
+        $this->settings = $settings;
+    }
 
 }

@@ -22,19 +22,12 @@ namespace basin\concepts;
  *
  * @author Alessio
  */
-interface Order {
+interface FetchQueryComponent {
     
     /**
-     * List of fields in order of priority
-     * @return array<OrderField>
+     * Apply the component to the query
+     * @param FetchQuery $query
      */
-    public function fields(): array;
+    public function apply_to(FetchQuery $query);
     
-    /**
-     * Append a field to the order
-     * @param OrderField $field field to append
-     * @return Order a new instance of Order
-     */
-    public function append(OrderField $field): Order;
-
 }
