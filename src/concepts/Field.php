@@ -23,31 +23,31 @@ namespace basin\concepts;
  * @author Alessio
  */
 interface Field {
-    
+
     /**
      * Name of the field
      * @return string
      */
     public function name(): string;
-    
+
     /**
      * Field alias
      * @return string
      */
     public function alias(): string;
-    
+
     /**
      * Lower the field to a map in the form
-     * [ key => [ origin ] ]
+     * [ key => [ subfields ] ]
      * @return array
      */
     public function lower_to(): array;
-    
+
     /**
      * Parse the result in a valid value
      * @param mixed $data
      * @return mixed parsed data
      */
     public function parse(mixed $data): mixed;
-    
+
 }

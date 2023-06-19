@@ -22,12 +22,12 @@ namespace basin\concepts;
  *
  * @author Alessio
  */
-interface FetchQueryComponent {
-    
+interface FetchApplicable {
+
     /**
      * Apply the component to the query
      * @param FetchQuery $query
      */
-    public function apply_to(FetchQuery $query);
-    
+    public function apply_to(FetchQueryBuilder $query);
+
 }

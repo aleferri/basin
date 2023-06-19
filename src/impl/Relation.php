@@ -16,33 +16,22 @@
  * limitations under the License.
  */
 
-namespace basin\concepts;
+namespace basin\impl;
 
 /**
  *
  * @author Alessio
  */
-interface Selection {
+interface Relation {
 
-    /**
-     * List of selected fields
-     * @return array<Field>
-     */
-    public function fields(): array;
+    public const IS_CONSTANT = 1;
 
-    /**
-     * Check if the selection contains the field or it's alias
-     * @param string $name
-     * @param bool $is_alias
-     * @return bool
-     */
-    public function contains(string $name, bool $is_alias = false): bool;
+    public function map(): array;
 
-    /**
-     * Check if the field is computed
-     * @param string $name
-     * @return bool
-     */
-    public function is_computed(string $name): bool;
+    public function is_constant(string $left): bool;
+
+    public function is_key(string $left): bool;
+
+    public function foreign_index(array $data): ForeignIndex;
 
 }

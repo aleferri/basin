@@ -58,9 +58,9 @@ interface Repository {
      * @return array
      */
     public function find_next_batch(string|array $fields, Filters $filters, Cursor $cursor): array;
-    
+
     /**
-     * 
+     *
      * @param FetchQuery $query
      * @return array
      */
