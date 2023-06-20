@@ -31,6 +31,12 @@ interface Selection {
     public function fields_descriptors(): array;
     
     /**
+     * Contains the specified field (name or alias)
+     * @return bool true if the selection contains the field
+     */
+    public function contains(string $name): bool;
+    
+    /**
      * List of sources
      * @return array
      */

@@ -32,13 +32,13 @@ interface Field {
     
     /**
      * Field alias
-     * @return string
+     * @return string|null
      */
-    public function alias(): string;
+    public function alias(): ?string;
     
     /**
      * Lower the field to a map in the form
-     * [ key => [ origin ] ]
+     * [ expr => [ origin ] ]
      * @return array
      */
     public function lower_to(): array;
