@@ -22,27 +22,28 @@ namespace basin\concepts;
  *
  * @author Alessio
  */
-interface Selection {
+interface FieldsResolver {
 
     /**
-     * List of selected fields
-     * @return array<string>
+     * Fields to be resolved
+     * @return array
      */
     public function fields(): array;
 
     /**
-     * Check if the selection contains the field or it's alias
-     * @param string $name
-     * @param bool $is_alias
-     * @return bool
+     * build a query for the component
+     * @param array<array> $records list of records
+     * @return array{FetchQuery, array}
      */
-    public function contains(string $name, bool $is_alias = false): bool;
+    public function to_query(array ...$records): array;
 
     /**
-     * Check if the field is computed
-     * @param string $name
-     * @return bool
+     * Resolve specified fields in the list of results
+     * @param Repository $repository repository that contains the required data
+     * @param FetchPlan $plan plan to be executed
+     * @param array $data list of fetched data
+     * @return array data with the integration of specified fields
      */
-    public function is_computed(string $name): bool;
+    public function resolve(Repository $repository, FetchPlan $plan, array $data): array;
 
 }

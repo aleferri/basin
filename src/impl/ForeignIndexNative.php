@@ -16,33 +16,24 @@
  * limitations under the License.
  */
 
-namespace basin\concepts;
+namespace basin\impl;
 
 /**
+ * Description of ForeignIndexImpl
  *
  * @author Alessio
  */
-interface Selection {
+class ForeignIndexNative implements ForeignIndex {
 
-    /**
-     * List of selected fields
-     * @return array<string>
-     */
-    public function fields(): array;
+    private $values;
 
-    /**
-     * Check if the selection contains the field or it's alias
-     * @param string $name
-     * @param bool $is_alias
-     * @return bool
-     */
-    public function contains(string $name, bool $is_alias = false): bool;
+    public function __construct(array $values) {
+        $this->values = $values;
+    }
 
-    /**
-     * Check if the field is computed
-     * @param string $name
-     * @return bool
-     */
-    public function is_computed(string $name): bool;
+    //put your code here
+    public function to_string(): string {
+        return implode( ',', $this->values );
+    }
 
 }

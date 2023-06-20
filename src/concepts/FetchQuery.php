@@ -19,60 +19,67 @@
 namespace basin\concepts;
 
 /**
- * Description of Query
+ * Description of an immutable FetchQuery, usually built by a query builder
+ * the process of fetching a complex resource is the following:
+ * Classname
+ *      -> meta gathering
+ *      -> creating fetch plan
+ *      -> queueing lowered properties into multiple queries
+ *      -> gathering results
+ *      -> reconstructing properties
+ *      -> creating the object
  *
  * @author Alessio
  */
 interface FetchQuery {
-    
+
     /**
      * Query selection
      * @return Selection
      */
     public function selection(): Selection;
-    
+
+    /**
+     * From expression
+     * @return string
+     */
+    public function from(): string;
+
+    /**
+     * List of filters group in the form [ id -> string ]
+     * @param string $id location id (per_row/per_group/range)
+     * @return array
+     */
+    public function filters(string $id): array;
+
+    /**
+     * Group by
+     * @return array
+     */
+    public function group_by(): array;
+
+    /**
+     * Order by if present
+     * @return Order|null
+     */
+    public function order_by(): ?Order;
+
+    /**
+     * Limit if present
+     * @return int|null
+     */
+    public function limit(): ?int;
+
+    /**
+     * Offset if present
+     * @return int|null
+     */
+    public function offset(): ?int;
+
     /**
      * Values in the form [ area => [ ...values ] ]
      * @return array
      */
-    public function values(): array;
-    
-    /**
-     * Append a value
-     * @param string $target
-     * @param mixed $data
-     * @return FetchQuery
-     */
-    public function append_value(string $target, mixed $data): FetchQuery;
-    
-    /**
-     * Chain an existings expression
-     * @param string $target
-     * @param string $rel
-     * @param mixed $data
-     * @return FetchQuery
-     */
-    public function chain_expression(string $target, string $rel, string $expression, mixed ...$data): FetchQuery;
-    
-    /**
-     * Fold an existings expression and then chain the new expression
-     * @param string $target
-     * @param string $rel
-     * @param mixed $data
-     * @return FetchQuery
-     */
-    public function fold_expression(string $target, string $rel, string $expression, mixed ...$data): FetchQuery;
-    
-    public function group_by(string ...$fields): array;
-    
-    public function also_group_by(string $field): array;
-    
-    public function order(): ?Order;
-    
-    public function limit(): ?int;
-    
-    public function offset(): ?int;
-    
-    public function restrict(int $limit, ?int $skip): void;
+    public function values(?string $id = null): array;
 
 }
