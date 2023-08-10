@@ -23,6 +23,12 @@ namespace basin\concepts;
  * @author Alessio
  */
 interface FieldsResolver {
+    
+    /**
+     * Id of the resolver
+     * @return string
+     */
+    public function id(): string;
 
     /**
      * Fields to be resolved

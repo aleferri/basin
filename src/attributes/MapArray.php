@@ -18,24 +18,23 @@
 
 namespace basin\attributes;
 
+use basin\concepts\OutRel;
+
 /**
  * Description of MapProperty
  *
  * @author Alessio
  */
 #[Attribute(Attribute::TARGET_PROPERTY)]
-class MapPropertyComplex {
+class MapArray {
 
     public $context;
-    public $list;
-    public $classname;
+    public $origin;
     public $settings;
 
-    public function __construct(string $context, string $classname, array $to, array $settings = []) {
+    public function __construct(string $context, OutRel|bool $origin, array $settings = []) {
         $this->context = $context;
-        $this->classname = $classname;
-        $this->list = $to;
+        $this->origin = $origin;
         $this->settings = $settings;
     }
-
 }

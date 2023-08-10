@@ -22,7 +22,7 @@ namespace basin\concepts;
  *
  * @author Alessio
  */
-interface Page extends FetchQueryComponent {
+interface Page {
 
     /**
      * Numerical offset, like skip n rows
@@ -44,9 +44,8 @@ interface Page extends FetchQueryComponent {
 
     /**
      * Apply to query
-     * @param FetchQuery $target
+     * @param FetchQueryBuilder $target
      * @return void
      */
-    public function apply_to(FetchQuery $target): void;
-
+    public function apply_to(FetchQueryBuilder $target): void;
 }

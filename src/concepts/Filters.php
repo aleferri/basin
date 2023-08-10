@@ -23,13 +23,12 @@ namespace basin\concepts;
  *
  * @author Alessio
  */
-interface Filters extends FetchQueryComponent {
+interface Filters {
 
     /**
      * Apply to query
-     * @param FetchQuery $query
+     * @param FetchQueryBuilder $query
      * @return void
      */
-    public function apply_to(FetchQuery $query): void;
-
+    public function apply_to(FetchQueryBuilder $query): void;
 }

@@ -22,7 +22,7 @@ namespace basin\concepts;
  *
  * @author Alessio
  */
-interface Cursor extends FetchQueryComponent {
+interface Cursor {
 
     /**
      * Numerical limit, like limit to n results
@@ -56,9 +56,8 @@ interface Cursor extends FetchQueryComponent {
 
     /**
      * Apply to query
-     * @param FetchQuery $query
+     * @param FetchQueryBuilder $query
      * @return void
      */
-    public function apply_to(FetchQuery $query): void;
-
+    public function apply_to(FetchQueryBuilder $query): void;
 }
