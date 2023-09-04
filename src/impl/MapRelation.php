@@ -27,11 +27,11 @@ class MapRelation implements Relation {
 
     private $map;
 
-    public function __construct(array $map) {
+    public function __construct( array $map ) {
         $this->map = $map;
     }
 
-    public function foreign_index(array $data): ForeignIndex {
+    public function foreign_index( array $data ): ForeignIndex {
         $index = [];
 
         foreach ( $this->map as $entry ) {
@@ -48,7 +48,7 @@ class MapRelation implements Relation {
         return new ForeignIndexNative( $index );
     }
 
-    public function is_constant(string $left): bool {
+    public function is_constant( string $left ): bool {
         foreach ( $this->map as $entry ) {
             if ( $entry[ 0 ] === $left ) {
                 return Relation::IS_CONSTANT == $entry[ 1 ];
@@ -58,12 +58,43 @@ class MapRelation implements Relation {
         return false;
     }
 
-    public function is_key(string $left): bool {
-        return ! $this->is_constant( $left );
+    public function is_key( string $left ): bool {
+        return !$this->is_constant( $left );
     }
 
     public function map(): array {
         return $this->map;
     }
 
+    public function key_equality(): array {
+        $map = [];
+
+        foreach ( $this->map as $entry ) {
+            [ $left, $kind, $right ] = $entry;
+
+            if ( $kind === Relation::IS_CONSTANT ) {
+                $map[ $left ] = $right;
+            }
+        }
+
+        return $map;
+    }
+    
+    public function prepare_links(): array {
+        $dynamic = [];
+        $all = [];
+
+        foreach ( $this->map as $entry ) {
+            [ $left, $kind, $right ] = $entry;
+
+            if ( $kind === Relation::IS_CONSTANT ) {
+                $all[ $right ] = $left;
+            } else {
+                $all[ $right ] = [];
+                $dynamic[ $left ] = $right;
+            }
+        }
+
+        return [ $all, $dynamic ];
+    }
 }

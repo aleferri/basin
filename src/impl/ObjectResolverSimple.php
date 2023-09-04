@@ -19,38 +19,35 @@
 namespace basin\impl;
 
 use basin\concepts\Repository;
-use basin\concepts\FetchQuery;
 use basin\concepts\FetchPlan;
 use basin\concepts\FieldsResolver;
 use basin\concepts\Deserializer;
 
 /**
- * Description of ObjectFetcher
+ * Description of ObjectResolverSingle
  *
  * @author Alessio
  */
-class ComplexObjectResolver implements FieldsResolver {
+class ObjectResolverSimple implements FieldsResolver {
 
+    private $id;
     private $name;
+    private $fields;
+    private $relation;
     private $deserializer;
+    private $source;
 
-    /**
-     *
-     * @var FieldsResolver
-     */
-    private $primary;
-
-    /**
-     *
-     * @var array<FieldsResolver>
-     */
-    private $resolvers;
-
-    public function __construct(string $name, Deserializer $deserializer, FieldsResolver $primary, array $resolvers) {
+    public function __construct(string $id, string $name, string $fields, string $source, Relation $relation, Deserializer $deserializer) {
+        $this->id = $id;
         $this->name = $name;
+        $this->fields = $fields;
+        $this->relation = $relation;
+        $this->source = $source;
         $this->deserializer = $deserializer;
-        $this->primary = $primary;
-        $this->resolvers = $resolvers;
+    }
+    
+    public function id(): string {
+        return $this->id;
     }
 
     public function fields(): array {
@@ -58,14 +55,10 @@ class ComplexObjectResolver implements FieldsResolver {
     }
 
     public function resolve(Repository $repository, FetchPlan $plan, array $data): array {
-        [ $query, $processed ] = $this->primary->to_query( ...$data );
+        [ $query, $processed ] = $this->to_query( ...$data );
         $associated = $repository->find_query( $query );
 
-        foreach ( $this->resolvers as $resolver ) {
-            $associated = $resolver->resolve( $this->repository, $plan, $associated );
-        }
-
-        $fk_name = '__fk_' . implode( ',', $this->name );
+        $fk_name = '__fk_' . $this->id;
 
         foreach ( $processed as &$record ) {
             $fk = $record[ $fk_name ];
@@ -82,7 +75,24 @@ class ComplexObjectResolver implements FieldsResolver {
     }
 
     public function to_query(...$records): array {
-        return $this->primary->to_query( ...$records );
+        [ $by_req, $map ] = $this->relation->prepare_links();
+
+        $fk_name = '__fk_' . $this->name;
+
+        foreach ( $records as &$record ) {
+            $index = [];
+
+            foreach ( $map as $left => $right ) {
+                $by_req[ $right ][] = $record[ $left ];
+                $index[] = $by_req[ $right ];
+            }
+
+            $record[ $fk_name ] = new ForeignIndexNative( $index );
+        }
+        
+        unset( $record );
+
+        return [ null, $records ];
     }
 
     private function find_index(array $list, string $index_name, ForeignIndex $index): ?array {

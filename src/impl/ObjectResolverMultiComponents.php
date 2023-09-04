@@ -24,24 +24,37 @@ use basin\concepts\FieldsResolver;
 use basin\concepts\Deserializer;
 
 /**
- * Description of SimpleObjectResolver
+ * Description of ObjectFetcher
  *
  * @author Alessio
  */
-class SimpleObjectResolver implements FieldsResolver {
+class ObjectResolverMultiComponents implements FieldsResolver {
 
+    private $id;
     private $name;
-    private $fields;
-    private $relation;
     private $deserializer;
-    private $source;
 
-    public function __construct(string $name, string $fields, string $source, Relation $relation, Deserializer $deserializer) {
+    /**
+     *
+     * @var FieldsResolver
+     */
+    private $primary;
+
+    /**
+     *
+     * @var array<FieldsResolver>
+     */
+    private $resolvers;
+
+    public function __construct(string $id, string $name, Deserializer $deserializer, FieldsResolver $primary, array $resolvers) {
         $this->name = $name;
-        $this->fields = $fields;
-        $this->relation = $relation;
-        $this->source = $source;
         $this->deserializer = $deserializer;
+        $this->primary = $primary;
+        $this->resolvers = $resolvers;
+    }
+    
+    public function id(): string {
+        return $this->id;
     }
 
     public function fields(): array {
@@ -49,10 +62,14 @@ class SimpleObjectResolver implements FieldsResolver {
     }
 
     public function resolve(Repository $repository, FetchPlan $plan, array $data): array {
-        [ $query, $processed ] = $this->to_query( ...$data );
+        [ $query, $processed ] = $this->primary->to_query( ...$data );
         $associated = $repository->find_query( $query );
 
-        $fk_name = '__fk_' . $this->name;
+        foreach ( $this->resolvers as $resolver ) {
+            $associated = $resolver->resolve( $this->repository, $plan, $associated );
+        }
+
+        $fk_name = '__fk_' . $this->primary->id();
 
         foreach ( $processed as &$record ) {
             $fk = $record[ $fk_name ];
@@ -69,34 +86,7 @@ class SimpleObjectResolver implements FieldsResolver {
     }
 
     public function to_query(...$records): array {
-        $by_req = [];
-
-        $test = [];
-        foreach ( $this->relation->map() as $entry ) {
-            [ $left, $kind, $right ] = $entry;
-
-            if ( $kind === Relation::IS_CONSTANT ) {
-                $by_req[ $right ] = $left;
-            } else {
-                $by_req[ $right ] = [];
-                $test[ $left ] = $right;
-            }
-        }
-
-        $fk_name = '__fk_' . $this->name;
-
-        foreach ( $records as &$record ) {
-            $index = [];
-
-            foreach ( $test as $left => $right ) {
-                $by_req[ $right ][] = $record[ $left ];
-                $index[] = $by_req[ $right ];
-            }
-
-            $record[ $fk_name ] = new ForeignIndexNative( $index );
-        }
-
-        return [ null, $records ];
+        return $this->primary->to_query( ...$records );
     }
 
     private function find_index(array $list, string $index_name, ForeignIndex $index): ?array {

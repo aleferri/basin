@@ -19,25 +19,17 @@
 namespace basin\impl;
 
 /**
+ * Description of Deserializer
  *
  * @author Alessio
  */
-interface Relation {
+trait Deserializable {
 
-    public const IS_CONSTANT = 1;
-
-    public function map(): array;
-
-    public function is_constant(string $left): bool;
-
-    public function is_key(string $left): bool;
-
-    public function foreign_index(array $data): ForeignIndex;
-    
-    /**
-     * 
-     * @return array{test, link}
-     */
-    public function prepare_links(): array;
-
+    public function deserialize(array $args): void {
+        foreach ( $args as $key => $value ) {
+            if ( property_exists( $this, $key ) ) {
+                $this->$key = $value;
+            }
+        }
+    }
 }

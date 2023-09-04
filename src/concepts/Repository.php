@@ -30,7 +30,7 @@ interface Repository {
      * @param mixed $id
      * @return object|array
      */
-    public function fetch(string|array $fields, mixed $id): object|array;
+    public function fetch(string|array $fields, mixed $id): object|array|null;
 
     /**
      * Find all matching entities
@@ -87,5 +87,4 @@ interface Repository {
      * @return bool
      */
     public function drop(object|array $data, int $policy = 1): bool;
-
 }

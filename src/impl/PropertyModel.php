@@ -22,22 +22,19 @@ namespace basin\impl;
  *
  * @author Alessio
  */
-interface Relation {
+interface PropertyModel {
 
-    public const IS_CONSTANT = 1;
-
-    public function map(): array;
-
-    public function is_constant(string $left): bool;
-
-    public function is_key(string $left): bool;
-
-    public function foreign_index(array $data): ForeignIndex;
-    
     /**
-     * 
-     * @return array{test, link}
+     * Field name
+     * @return string
      */
-    public function prepare_links(): array;
+    public function name(): string;
 
+    /**
+     * Assign the property from the data
+     * @param object $instance
+     * @param ReflectionProperty $property
+     * @param array $data
+     */
+    public function assign_from(object $instance, \ReflectionProperty $property, array $data): void;
 }
