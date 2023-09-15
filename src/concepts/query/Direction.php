@@ -42,6 +42,14 @@ class Direction {
         return self::$asc;
     }
 
+    public static function of(string $str): self {
+        if ( strtoupper( $str ) === 'DESC' ) {
+            return self::desc();
+        }
+
+        return self::asc();
+    }
+
     private $name;
 
     private function __construct(string $name) {
