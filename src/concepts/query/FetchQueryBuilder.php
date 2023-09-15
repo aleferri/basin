@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-namespace basin\concepts;
+namespace basin\concepts\query;
 
 /**
  *

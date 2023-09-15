@@ -16,33 +16,19 @@
  * limitations under the License.
  */
 
-namespace basin\concepts;
+namespace basin\concepts\query;
 
 /**
+ * Description of Filters
  *
  * @author Alessio
  */
-interface Selection {
+interface Filters {
 
     /**
-     * List of selected fields
-     * @return array<string>
+     * Apply to query
+     * @param FetchQueryBuilder $query
+     * @return void
      */
-    public function fields(): array;
-
-    /**
-     * Check if the selection contains the field or it's alias
-     * @param string $name
-     * @param bool $is_alias
-     * @return bool
-     */
-    public function contains(string $name, bool $is_alias = false): bool;
-
-    /**
-     * Check if the field is computed
-     * @param string $name
-     * @return bool
-     */
-    public function is_computed(string $name): bool;
-
+    public function apply_to(FetchQueryBuilder $query): void;
 }

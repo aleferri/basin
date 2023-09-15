@@ -23,7 +23,7 @@ namespace basin\impl;
  *
  * @author Alessio
  */
-class ReadModel {
+class ReadObjectModel implements DataModel {
 
     /**
      * Parse a class

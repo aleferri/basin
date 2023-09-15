@@ -18,6 +18,12 @@
 
 namespace basin\concepts;
 
+use basin\concepts\query\Cursor;
+use basin\concepts\query\FetchQuery;
+use basin\concepts\query\Filters;
+use basin\concepts\query\Order;
+use basin\concepts\query\Page;
+
 /**
  *
  * @author Alessio

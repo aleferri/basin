@@ -16,25 +16,24 @@
  * limitations under the License.
  */
 
-namespace basin\concepts;
+namespace basin\concepts\query;
 
-/**
- *
- * @author Alessio
- */
-interface Order {
-    
-    /**
-     * List of fields in order of priority
-     * @return array<OrderField>
-     */
-    public function fields(): array;
-    
-    /**
-     * Append a field to the order
-     * @param OrderField $field field to append
-     * @return Order a new instance of Order
-     */
-    public function append(OrderField $field): Order;
+class OrderField {
 
+    /**
+     *
+     * @var string
+     */
+    public $field;
+
+    /**
+     *
+     * @var Direction
+     */
+    public $direction;
+
+    public function __construct(string $field, Direction $direction) {
+        $this->field = $field;
+        $this->direction = $direction;
+    }
 }

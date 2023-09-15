@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-namespace basin\concepts;
+namespace basin\concepts\query;
 
 /**
  * Description of Direction
@@ -51,5 +51,4 @@ class Direction {
     public function name(): string {
         return $this->name;
     }
-
 }

@@ -35,7 +35,7 @@ interface Field {
      * @return string|null
      */
     public function alias(): ?string;
-    
+
     /**
      * Lower the field to a map in the form
      * [ expr => [ origin ] ]
@@ -49,5 +49,4 @@ interface Field {
      * @return mixed parsed data
      */
     public function parse(mixed $data): mixed;
-
 }

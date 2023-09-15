@@ -16,36 +16,48 @@
  * limitations under the License.
  */
 
-namespace basin\concepts;
+namespace basin\concepts\query;
 
 /**
  *
  * @author Alessio
  */
-interface Page {
-
-    /**
-     * Numerical offset, like skip n rows
-     * @return int
-     */
-    public function offset(): int;
+interface Cursor {
 
     /**
      * Numerical limit, like limit to n results
-     * @return int
+     * @return int|null
      */
-    public function limit(): int;
+    public function limit(): ?int;
 
     /**
-     * Order associated at page
+     * Symbolic from, like restart after id 60 or year 2013
+     * @return array
+     */
+    public function from(): array;
+
+    /**
+     * Symbolic limit, like fetch until id 250 or year 2017
+     * @return array
+     */
+    public function to(): array;
+
+    /**
+     * Fields for the cursor (num_row, id, updated_at, etc)
+     * @return array list of scrolled fields
+     */
+    public function cursor(): array;
+
+    /**
+     * Order all fields, at minimun the fields specified in cursor
      * @return Order
      */
     public function order(): Order;
 
     /**
      * Apply to query
-     * @param FetchQueryBuilder $target
+     * @param FetchQueryBuilder $query
      * @return void
      */
-    public function apply_to(FetchQueryBuilder $target): void;
+    public function apply_to(FetchQueryBuilder $query): void;
 }

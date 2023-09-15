@@ -1,6 +1,6 @@
 <?php
 
-/* 
+/*
  * Copyright 2023 Alessio.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,25 +16,24 @@
  * limitations under the License.
  */
 
-namespace basin\concepts;
+namespace basin\concepts\query;
 
-class OrderField {
-    
+/**
+ *
+ * @author Alessio
+ */
+interface Order {
+
     /**
-     * 
-     * @var string
+     * List of fields in order of priority
+     * @return array<OrderField>
      */
-    public $field;
-    
+    public function fields(): array;
+
     /**
-     * 
-     * @var Direction
+     * Append a field to the order
+     * @param OrderField $field field to append
+     * @return Order a new instance of Order
      */
-    public $direction;
-    
-    public function __construct(string $field, Direction $direction) {
-        $this->field = $field;
-        $this->direction = $direction;
-    }
-    
+    public function append(OrderField $field): Order;
 }

@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-namespace basin\concepts;
+namespace basin\concepts\query;
 
 /**
  * Description of an immutable FetchQuery, usually built by a query builder
@@ -81,5 +81,4 @@ interface FetchQuery {
      * @return array
      */
     public function values(?string $id = null): array;
-
 }
