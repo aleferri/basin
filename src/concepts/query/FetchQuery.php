@@ -50,7 +50,7 @@ interface FetchQuery {
      * @param string $id location id (per_row/per_group/range)
      * @return array
      */
-    public function filters(string $id): array;
+    public function filters(): array;
 
     /**
      * Group by
