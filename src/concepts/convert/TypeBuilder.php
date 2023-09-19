@@ -27,16 +27,14 @@ interface TypeBuilder {
     /**
      * Instance a new object with data and defaults fields
      * @param array $data data from database in the form field => value
-     * @param array $defaults defaults values for the missing fields
      * @return object instances object
      */
-    public function instance(array $data, array $defaults = []): object;
+    public function instance(array $data): object|array;
 
     /**
      * Instance an array of new objects with data from record and defaults fields
      * @param array $records data from the database in the form of array of records in field => value
-     * @param array $defaults defaults values in case of missing fields
      * @return array of instances of objects
      */
-    public function instance_all(array $records, array $defaults = []): array;
+    public function instance_all(array $records): array;
 }
