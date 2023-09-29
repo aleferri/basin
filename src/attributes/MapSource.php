@@ -24,16 +24,15 @@ namespace basin\attributes;
  * @author Alessio
  */
 #[Attribute(Attribute::TARGET_CLASS)]
-class MapTable {
+class MapSource {
 
     public $context;
-    public $root;
+    public $source;
     public $settings;
 
-    public function __construct(string $context, string $root, array $settings = []) {
+    public function __construct(string $context, string $source, array $settings = []) {
         $this->context = $context;
-        $this->root = $root;
+        $this->source = $source;
         $this->settings = $settings;
     }
-
 }

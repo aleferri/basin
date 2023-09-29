@@ -36,7 +36,7 @@ class ReadObjectModel implements DataModel {
 
         $properties = $class->getProperties();
 
-        $tables = $class->getAttributes( \basin\attributes\MapTable::class );
+        $tables = $class->getAttributes( \basin\attributes\MapSource::class );
         if ( count( $tables ) < 1 ) {
             throw new \RuntimeException( 'no source table to start with' );
         }
