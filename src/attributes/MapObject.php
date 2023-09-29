@@ -24,17 +24,17 @@ namespace basin\attributes;
  * @author Alessio
  */
 #[Attribute(Attribute::TARGET_PROPERTY)]
-class MapComplex {
+class MapObject {
 
     public $context;
-    public $list;
     public $classname;
+    public $ref;
     public $settings;
 
-    public function __construct(string $context, string $classname, array $to, array $settings = []) {
+    public function __construct(string $context, string $classname, array $ref, array $settings = []) {
         $this->context = $context;
         $this->classname = $classname;
-        $this->list = $to;
+        $this->ref = $ref;
         $this->settings = $settings;
     }
 }

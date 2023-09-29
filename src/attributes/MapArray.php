@@ -18,8 +18,6 @@
 
 namespace basin\attributes;
 
-use basin\concepts\OutRel;
-
 /**
  * Description of MapProperty
  *
@@ -29,12 +27,16 @@ use basin\concepts\OutRel;
 class MapArray {
 
     public $context;
-    public $origin;
+    public $classname;
+    public $ref;
     public $settings;
 
-    public function __construct(string $context, OutRel|bool $origin, array $settings = []) {
+    public function __construct(string $context, string $classname, array|bool $ref, array $settings = []) {
         $this->context = $context;
-        $this->origin = $origin;
+        $this->classname = $classname;
+        $this->ref = $ref;
         $this->settings = $settings;
+        $this->settings[ 'direction' ] = $settings[ 'direction' ] ?? 'both';
+        $this->settings[ 'readonly' ] = $settings[ 'readonly' ] ?? true;
     }
 }
