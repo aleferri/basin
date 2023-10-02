@@ -37,4 +37,16 @@ interface TypeBuilder {
      * @return array of instances of objects
      */
     public function instance_all(array $records): array;
+
+    /**
+     * TypeBuilder arity (a builder of a collection has an arity > 1)
+     * @return int
+     */
+    public function arity(): int;
+
+    /**
+     * Columns not present in the first query
+     * @return array
+     */
+    public function late_bind_columns(): array;
 }
