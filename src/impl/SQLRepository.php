@@ -37,7 +37,7 @@ class SQLRepository implements Repository {
         $this->factory = $factory;
     }
 
-    private function instance_all(array $records, ReadModel $model): array {
+    private function instance_all(array $records, DataModel $model): array {
         $instances = [];
 
         foreach ( $records as $record ) {
@@ -47,28 +47,37 @@ class SQLRepository implements Repository {
         return $instances;
     }
 
-    private function instance(array $record, ReadModel $model): object|null {
-        $instance = $model->class()->newInstanceWithoutConstructor();
-
-        foreach ( $model->fields() as $property ) {
-            $property_model = $this->factory->of( $property->settings[ 'name' ], $property->settings );
+    private function instance(array $record, DataModel $model): object|array|null {
+        if ( is_string( $model->class() ) ) {
+            return $record;
         }
 
-        foreach ( $record as $key => $value ) {
-            $properties = $model->assignables_from( $key );
+        if ( isset( $record[ '__class' ] ) ) {
+            $class = new \ReflectionClass( $record[ '__class' ] );
+        } else {
+            $class = $model->class();
+        }
 
-            foreach ( $properties as $name ) {
-                $attribute = $model->field( $name );
+        $instance = $class->newInstanceWithoutConstructor();
 
-                $converted = $this->driver->convert_to( $value, $attribute->kind, $attribute->settings );
-
-                $property = $model->class()->getProperty( $name );
-                $property->setAccessible( true );
-                $property->setValue( $instance, $converted );
-            }
+        foreach ( $model->fields() as $name ) {
+            $property = $class->getProperty( $name );
+            $property_model = $this->factory->of( $property->settings[ 'name' ], $property->settings );
+            $property_model->assign_from( $instance, $property, $record );
         }
 
         return $instance;
+    }
+
+    private function fill(array $instances, DataModel $instances_model, array $objects, DataModel $objects_models) {
+        foreach ( $instances as $instance ) {
+            $class = new \ReflectionClass( get_class( $instance ) );
+            foreach ( $instances_model->fields() as $name ) {
+                $property = $class->getProperty( $name );
+                $property_model = $this->factory->of( $property->settings[ 'name' ], $property->settings );
+                $property_model->assign_from( $instance, $property, $objects );
+            }
+        }
     }
 
     private function bin_fields(array $fields): array {
@@ -86,15 +95,11 @@ class SQLRepository implements Repository {
         return $by_table;
     }
 
-    private function builder_for_fields(array $fields): array {
+    private function parse_array(array $fields): array {
         $by_table = $this->bin_fields( $fields );
 
         foreach ( $by_table as $table => $properties ) {
-
-            return [ $table, $this->driver
-                        ->get_fetch_query_builder()
-                        ->select( $properties )
-                        ->from( $table ) ];
+            return new ReadArrayModel( $table, $properties, $this->driver->find_primary_key( $table ) );
         }
 
         throw new \RuntimeException( 'Missing fields' );
@@ -130,7 +135,7 @@ class SQLRepository implements Repository {
         return [ $condition, $values ];
     }
 
-    private function builder_from_meta(ReadModel $model): FetchQueryBuilder {
+    private function builder_from_model(DataModel $model): FetchQueryBuilder {
         $root_alias = 't0';
 
         $selection = [];
@@ -151,21 +156,14 @@ class SQLRepository implements Repository {
 
     public function fetch(string|array $fields, mixed $id): object|array|null {
         if ( is_array( $fields ) ) {
-            [ $table, $builder ] = $this->builder_for_fields( $fields );
-            $primary_key = $this->driver->find_primary_key( $table );
-
-            [ $condition, $values ] = $this->create_condition( $primary_key, '=', $id );
-
-            $query = $builder->filter_by( 'primary', $condition, $values )->into_query();
-
-            return $this->driver->fetch( $query );
+            $data_model = $this->parse_array( $fields );
+        } else {
+            $data_model = ReadObjectModel::parse( $fields );
         }
 
-        $read_model = ReadModel::parse( $fields );
+        $builder = $this->builder_from_model( $data_model );
 
-        $builder = $this->builder_from_meta( $read_model );
-
-        [ $condition, $values ] = $this->create_condition( $read_model->primary_key(), '=', $id );
+        [ $condition, $values ] = $this->create_condition( $data_model->primary_key(), '=', $id );
 
         $query = $builder->filter_by( 'primary', $condition, $values )->into_query();
 
@@ -175,7 +173,7 @@ class SQLRepository implements Repository {
             return null;
         }
 
-        return $this->instance( $records[ 0 ] );
+        return $this->instance( $records[ 0 ], $data_model );
     }
 
     public function find_all(string|array $fields, Filters $filters, ?\basin\concepts\Order $order_by): array {

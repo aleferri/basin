@@ -22,7 +22,7 @@ namespace basin\concepts\convert;
  *
  * @author Alessio
  */
-interface TypeBuilder {
+interface Deserializer {
 
     /**
      * Instance a new object with data and defaults fields
