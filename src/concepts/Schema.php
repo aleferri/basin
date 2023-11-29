@@ -43,10 +43,10 @@ interface Schema {
     public function properties(): array;
 
     /**
-     * Far sourced properties of the schema, they may require dedicated queries
+     * Foreign sourced properties of the schema, they may require dedicated queries
      * @return array
      */
-    public function far_sourced_properties(): array;
+    public function foreign_sourced_properties(): array;
 
     /**
      * Local sourced properties of the schema, they should be included in the base query

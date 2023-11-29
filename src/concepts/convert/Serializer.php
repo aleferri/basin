@@ -19,28 +19,23 @@
 namespace basin\concepts\convert;
 
 /**
+ * Description of Serializer
  *
  * @author Alessio
  */
-interface TypeBuilder {
+interface Serializer {
 
     /**
-     * Instance a new object with data and defaults fields
-     * @param array $data data from database in the form field => value
-     * @return object instances object
+     * Breakup an object in his components
+     * @param object $object object to breakup
+     * @return array of components in the form [ [ target, arity, data ], ... ]
      */
-    public function instance(array $data): object|array;
+    public function breakup(object $object): array;
 
     /**
-     * Instance an array of new objects with data from record and defaults fields
-     * @param array $records data from the database in the form of array of records in field => value
-     * @return array of instances of objects
+     * Breakup a list of objects in their components
+     * @param array $objects objects to breakup
+     * @return array of components in the form [ [ target => [ arity, data ] ] ]
      */
-    public function instance_all(array $records): array;
-
-    /**
-     * TypeBuilder arity (a builder of a collection has an arity > 1)
-     * @return int
-     */
-    public function arity(): int;
+    public function breakup_all(array $objects): array;
 }

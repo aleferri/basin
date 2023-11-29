@@ -37,10 +37,4 @@ interface Deserializer {
      * @return array of instances of objects
      */
     public function instance_all(array $records): array;
-
-    /**
-     * TypeBuilder arity (a builder of a collection has an arity > 1)
-     * @return int
-     */
-    public function arity(): int;
 }
