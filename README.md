@@ -9,5 +9,5 @@ Collect all concepts needed to implement an ORM in this library, then let other 
 ## License
 Apache Public License 2.0
 
-## Production Ready
+## Production Readiness
 Use or don't use in production, i don't care. Don't ask for support in any case
