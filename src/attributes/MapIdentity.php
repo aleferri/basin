@@ -33,7 +33,7 @@ class MapIdentity {
     /**
      * Map primitive type
      * @param string $context serialization context, typically 'SQL'
-     * @param string $kind typename, one of 'bool' | 'int' | 'float' | 'string'
+     * @param string $kind typename, one of 'single' | 'composite'
      * @param array $settings any settings, like length, defaults, etc
      */
     public function __construct(string $context, string $kind, array $settings = []) {

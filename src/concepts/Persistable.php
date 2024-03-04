@@ -29,14 +29,14 @@ interface Persistable {
      * @param Identity $identity
      * @return Identity|null
      */
-    public function __transient_identity(?Identity $identity): ?Identity;
+    public function __transient_identity(?Identity $identity = null): ?Identity;
 
     /**
      * Get id
      * @param Identity $identity
      * @return Identity|null
      */
-    public function __identity(?Identity $identity): ?Identity;
+    public function __identity(?Identity $identity = null): ?Identity;
 
     /**
      * Equals

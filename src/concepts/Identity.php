@@ -24,4 +24,6 @@ namespace basin\concepts;
  */
 interface Identity {
 
+    public function fill_as_fk(array $record, string $prefix): array;
+
 }
