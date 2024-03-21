@@ -24,6 +24,11 @@ namespace basin\concepts;
  */
 interface Identity {
 
+    /**
+     * Fill related record with references to the main record identity
+     * @param array $record array to fill
+     * @param string $prefix fk prefix
+     * @return array $record + the keys set
+     */
     public function fill_as_fk(array $record, string $prefix): array;
-
 }
